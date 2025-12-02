@@ -1,7 +1,7 @@
 
-export function Fruit() {
+export function Sidebar() {
 
 	return (
-		
+		<div></div>
 	)
 }
