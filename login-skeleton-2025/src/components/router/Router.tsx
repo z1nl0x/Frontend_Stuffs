@@ -1,12 +1,15 @@
-import { lazy, Suspense, useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { Outlet, RouteObject, useRoutes, BrowserRouter } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
 
 const Loading = () => <p className="p-4 w-full h-full text-center">Loading...</p>;
 
 const IndexScreen = lazy(() => import('~/components/screens/Index'));
 const Page404Screen = lazy(() => import('~/components/screens/404'));
+const HomeScreen = lazy(() => import('~/components/screens/Home'));
 
 function Layout() {
+
   return (
     <div>
       <nav className="p-4 flex items-center justify-between sticky top-0 z-50 bg-cyan-900 shadow-lg">
@@ -36,6 +39,16 @@ const InnerRouter = () => {
         {
           index: true,
           element: <IndexScreen />,
+        },
+        {
+          path: 'home',
+          element: <ProtectedRoute />,
+          children: [
+            {
+              index: true,
+              element: <HomeScreen />,
+            },
+          ],
         },
         {
           path: '*',

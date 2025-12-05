@@ -1,44 +1,76 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthState } from '~/components/contexts/UserContext';
 import { SignInButton } from '~/components/domain/auth/SignInButton';
-import { SignOutButton } from '~/components/domain/auth/SignOutButton';
 import { Head } from '~/components/shared/Head';
 import { SignInWithEmailAndPasswordForm } from '~/components/domain/auth/SignInWithEmailAndPasswordForm';
+import { SignUpForm } from '~/components/domain/auth/SignUpForm';
+
+type ViewState = 'SIGN_IN' | 'SIGN_UP';
 
 function Index() {
   const { state } = useAuthState();
-  const [isOpen, setIsOpen] = useState(true);
-  const completeButtonRef = useRef(null);
+  const navigate = useNavigate();
+
+  const [currentView, setCurrentView] = useState<ViewState>('SIGN_IN');
+
+  useEffect(() => {
+    if (state.state === 'SIGNED_IN') {
+      navigate('/home', { replace: true });
+    }
+  }, [state.state, navigate]);
+
+  const renderAuthForm = () => {
+    if (currentView === 'SIGN_IN') {
+      return (
+        <div className="flex flex-col items-center justify-center gap-6 p-8"> 
+          <SignInWithEmailAndPasswordForm />
+          
+          <button 
+            onClick={() => setCurrentView('SIGN_UP')} 
+            className="btn btn-link normal-case text-lg text-secondary-focus"
+          >
+            Ainda não tem conta? **Cadastre-se**
+          </button>
+
+          <div className="divider text-lg">OU CONTINUE COM</div>
+          <SignInButton />
+        </div>
+      );
+    } else {
+      return (
+        <div className="flex flex-col items-center justify-center gap-6 p-8"> 
+          <SignUpForm />
+          
+          <button 
+            onClick={() => setCurrentView('SIGN_IN')} 
+            className="btn btn-link normal-case text-lg text-primary-focus"
+          >
+            Já tem conta? **Faça Login**
+          </button>
+        </div>
+      );
+    }
+  };
 
   const renderContent = () => {
 
-    switch (state.state) {
-      case 'SIGNED_IN':
-        return (
-          <div className="flex flex-col items-center gap-6 p-8"> 
-            <h1 className="text-4xl font-bold">Bem-vindo(a), {state.currentUser.email}!</h1>
-            <p className="text-xl">Você está logado com sucesso.</p>
-            <SignOutButton />
-          </div>
-        );
-      case 'SIGNED_OUT':
-      case 'UNKNOWN':
-        return (
-          <div className="flex flex-col items-center justify-center gap-6 p-8"> 
-            <SignInWithEmailAndPasswordForm />
-            <div className="divider text-lg">OU CONTINUE COM</div>
-            <SignInButton />
-          </div>
-        );
-      default:
+    if (state.state === 'SIGNED_IN') {
+      return null;
+    }
+    
+
+    if (state.state === 'UNKNOWN') {
         return <p>Carregando estado de autenticação...</p>;
     }
+
+
+    return renderAuthForm();
   };
 
   return (
     <>
-      <Head title="LOGIN" />
-           
+      <Head title={currentView === 'SIGN_IN' ? 'Login' : 'Registrar-se'} />
       <div className="relative min-h-screen z-10 flex items-center justify-center">
         <div className="hero-content text-center w-full max-w-3xl bg-transparent"> 
           {renderContent()}
