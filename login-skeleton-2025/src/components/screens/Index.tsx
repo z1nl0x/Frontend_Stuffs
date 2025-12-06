@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthState } from '~/components/contexts/UserContext';
-import { SignInButton } from '~/components/domain/auth/SignInButton';
 import { Head } from '~/components/shared/Head';
 import { SignInWithEmailAndPasswordForm } from '~/components/domain/auth/SignInWithEmailAndPasswordForm';
 import { SignUpForm } from '~/components/domain/auth/SignUpForm';
@@ -20,60 +19,54 @@ function Index() {
     }
   }, [state.state, navigate]);
 
-  const renderAuthForm = () => {
-    if (currentView === 'SIGN_IN') {
-      return (
-        <div className="flex flex-col items-center justify-center gap-6 p-8"> 
-          <SignInWithEmailAndPasswordForm />
-          
-          <button 
-            onClick={() => setCurrentView('SIGN_UP')} 
-            className="btn btn-link normal-case text-lg text-secondary-focus"
-          >
-            Ainda não tem conta? **Cadastre-se**
-          </button>
+  if (state.state === 'SIGNED_IN') {
+    return null;
+  }
 
-          <div className="divider text-lg">OU CONTINUE COM</div>
-          <SignInButton />
-        </div>
-      );
-    } else {
-      return (
-        <div className="flex flex-col items-center justify-center gap-6 p-8"> 
-          <SignUpForm />
-          
-          <button 
-            onClick={() => setCurrentView('SIGN_IN')} 
-            className="btn btn-link normal-case text-lg text-primary-focus"
-          >
-            Já tem conta? **Faça Login**
-          </button>
-        </div>
-      );
-    }
-  };
-
-  const renderContent = () => {
-
-    if (state.state === 'SIGNED_IN') {
-      return null;
-    }
-    
-
-    if (state.state === 'UNKNOWN') {
-        return <p>Carregando estado de autenticação...</p>;
-    }
-
-
-    return renderAuthForm();
-  };
+  if (state.state === 'UNKNOWN') {
+    return (
+      <div className="relative min-h-screen z-10 flex items-center justify-center">
+        <p className="text-xl font-semibold">Carregando estado de autenticação...</p>
+      </div>
+    );
+  }
 
   return (
     <>
       <Head title={currentView === 'SIGN_IN' ? 'Login' : 'Registrar-se'} />
-      <div className="relative min-h-screen z-10 flex items-center justify-center">
-        <div className="hero-content text-center w-full max-w-3xl bg-transparent"> 
-          {renderContent()}
+      <div className="relative min-h-screen z-10 flex items-center justify-center p-4">
+        <div className="w-80 mx-auto">
+          
+          <div className="card shadow-2xl bg-base-100">
+
+            <div className="tabs tabs-boxed rounded-t-2xl">
+              <button
+                className={`tab tab-lg flex-1 font-bold ${currentView === 'SIGN_IN' ? 'tab-active bg-primary text-primary-content' : ''}`}
+                onClick={() => setCurrentView('SIGN_IN')}
+              >
+                Login
+              </button>
+              <button
+                className={`tab tab-lg flex-1 font-bold ${currentView === 'SIGN_UP' ? 'tab-active bg-secondary text-secondary-content' : ''}`}
+                onClick={() => setCurrentView('SIGN_UP')}
+              >
+                Registrar
+              </button>
+            </div>
+
+            <div className="card-body p-8">
+              {currentView === 'SIGN_IN' ? (
+                <div className="flex flex-col items-center justify-center gap-6">
+                  <SignInWithEmailAndPasswordForm />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-6">
+                  <SignUpForm />
+                </div>
+              )}
+            </div>
+            
+          </div>
         </div>
       </div>
     </>

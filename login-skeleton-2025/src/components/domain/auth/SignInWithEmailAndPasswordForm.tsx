@@ -26,9 +26,7 @@ export const SignInWithEmailAndPasswordForm = () => {
   };
 
   return (
-
-    <div className="card w-full max-w-lg shadow-2xl bg-base-100"> 
-      <form onSubmit={handleSubmit} className="card-body p-10">
+    <form onSubmit={handleSubmit} className="w-full">
         <h2 className="text-3xl font-bold mb-6 text-center">Acesse sua Conta</h2>
         
         {error && (
@@ -40,7 +38,7 @@ export const SignInWithEmailAndPasswordForm = () => {
           </div>
         )}
 
-        <div className="form-control mb-3">
+        <div className="form-control mb-3 max-w-xs mx-auto">
           <label className="label">
 
             <span className="label-text text-lg font-semibold">Email</span> 
@@ -49,14 +47,14 @@ export const SignInWithEmailAndPasswordForm = () => {
           <input
             type="email"
             placeholder="seu@email.com"
-            className="input input-bordered input-md" 
+            className="input input-bordered input-md w-full" 
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
           />
         </div>
-        <div className="form-control mb-6">
+        <div className="form-control mb-6 max-w-xs mx-auto">
           <label className="label">
 
             <span className="label-text text-lg font-semibold">Senha</span>
@@ -65,23 +63,28 @@ export const SignInWithEmailAndPasswordForm = () => {
           <input
             type="password"
             placeholder="sua senha"
-            className="input input-bordered input-md" 
+            className="input input-bordered input-md w-full" 
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
             autoComplete="current-password"
           />
         </div>
-        <div className="form-control mt-4">
+        <div className="form-control mt-4 max-w-xs mx-auto">
           <button 
             type="submit" 
-            className={`btn btn-primary btn-lg ${isLoading ? 'loading' : ''} normal-case`} 
+            className={`btn btn-primary btn-lg normal-case w-full`} 
             disabled={isLoading}
           >
-            {isLoading ? 'Entrando...' : 'Entrar'}
+            {isLoading ? 
+            (
+              <span className="flex items-center gap-2">
+                    <div className="loading loading-spinner loading-sm"></div>
+                    Entrando...
+                </span>
+            ) : 'Entrar'}
           </button>
         </div>
-      </form>
-    </div>
+    </form>
   );
 };
