@@ -4,7 +4,14 @@ import { ProtectedRoute } from './ProtectedRoute';
 import { Header } from '../shared/Header';
 import { Menu } from '../shared/Menu';
 
-const Loading = () => <p className="p-4 w-full h-full text-center">Loading...</p>;
+const Spinner = () => <span className="loading loading-spinner loading-xl"></span>;
+
+const Loading = () => (
+    <div className="flex flex-col items-center justify-center min-h-screen w-full bg-base-300">
+        <Spinner />
+        <p className="mt-4 text-lg text-base-content">Carregando...</p>
+    </div>
+);
 
 const IndexScreen = lazy(() => import('~/components/screens/Index'));
 const Page404Screen = lazy(() => import('~/components/screens/404'));
@@ -72,7 +79,7 @@ const InnerRouter = () => {
   ];
   const element = useRoutes(routes);
   return (
-    <div className="min-h-screen bg-base-300">
+    <div className="bg-base-300">
       <Suspense fallback={<Loading />}>{element}</Suspense>
     </div>
   );

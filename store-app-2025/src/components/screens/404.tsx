@@ -1,6 +1,5 @@
-// src/components/screens/404.tsx
 import { Head } from "~/components/shared/Head";
-import { useNavigate } from 'react-router-dom'; // 1. Importe useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function Page404() {
 
