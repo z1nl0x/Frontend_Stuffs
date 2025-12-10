@@ -13,7 +13,7 @@ const HomeScreen = lazy(() => import('~/components/screens/Home'));
 function Layout() {
 
   return (
-    <div className="drawer lg:drawer-open">
+    <div className="drawer">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
 
       <div className="drawer-content flex flex-col">

@@ -1,4 +1,3 @@
-// src/components/shared/Menu.tsx
 import { Link } from 'react-router-dom';
 import { SignOutButton } from '~/components/domain/auth/SignOutButton';
 import { useAuthState } from '~/components/contexts/UserContext';
@@ -6,35 +5,27 @@ import { useAuthState } from '~/components/contexts/UserContext';
 export const Menu = () => {
     const { state } = useAuthState();
 
-    // Se o estado não for SIGNED_IN, o menu não deve ser renderizado, 
-    // mas a lógica de exibição está no Header, então mantemos apenas o conteúdo.
     if (state.state !== 'SIGNED_IN') {
         return null;
     }
 
     return (
-        <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-            {/* Título/Cabeçalho do Menu */}
-            <li className="menu-title">
+        <ul className="menu p-4 w-3/4 md:w-80 min-h-full bg-base-200 text-base-content">
+            <div className="menu-title text-black">
                 <span>Bem-vindo(a), {state.currentUser.email}</span>
-            </li>
-            
-            {/* Itens de Navegação */}
+            </div>
+            <div className="divider"></div> 
             <li>
                 <Link to="/home">
                     Página Inicial
                 </Link>
             </li>
             <li>
-                {/* Exemplo de outro link. Ajuste conforme necessário. */}
                 <Link to="/profile">
-                    Meu Perfil (Exemplo)
+                    Meu Perfil
                 </Link>
             </li>
-            
             <div className="divider"></div> 
-            
-            {/* Botão de Sair/Deslogar */}
             <li>
                 <SignOutButton />
             </li>

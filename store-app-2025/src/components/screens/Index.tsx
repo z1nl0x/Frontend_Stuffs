@@ -34,7 +34,7 @@ function Index() {
   return (
     <>
       <Head title={currentView === 'SIGN_IN' ? 'Login' : 'Registrar-se'} />
-      <div className="relative min-h-screen z-10 flex items-center justify-center p-4">
+      <div className="relative min-h-screen z-10 flex items-center justify-center p-4 bg-gray-500">
         <div className="w-80 mx-auto">
           
           <div className="card shadow-2xl bg-base-100">
